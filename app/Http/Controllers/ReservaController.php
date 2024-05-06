@@ -16,7 +16,7 @@ class ReservaController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $reservas = $user->reservas()->orderBy('id')->get();
+        $reservas = $user->reservas()->orderBy('id')->paginate(5);
 
         return view('reservas.index', [
             'reservas' => $reservas,
@@ -39,26 +39,30 @@ class ReservaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'user_id' => 'required|exists:users,id',
-        'vuelo_id' => 'required|exists:vuelos,id',
-    ]);
+    {
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'vuelo_id' => 'required|exists:vuelos,id',
+            'plazas' => 'nullable|integer|min:1',
+        ]);
 
-    $vuelo = Vuelo::find($validated['vuelo_id']);
+        $plazas = $request->input('plazas', 1);
+        $vuelo = Vuelo::find($validated['vuelo_id']);
 
-    if ($vuelo->plazas > 0) {
-        $reserva = new Reserva();
-        $reserva->user_id = $validated['user_id'];
-        $reserva->vuelo_id = $validated['vuelo_id'];
-        $reserva->save();
-        session()->flash('success', 'La reserva se ha creado correctamente.');
-    } else {
-        session()->flash('error', 'No hay plazas disponibles para el vuelo seleccionado.');
+        if ($vuelo->plazas >= $plazas) {
+            for ($i = 0; $i < $plazas; $i++) {
+                $reserva = new Reserva();
+                $reserva->user_id = $validated['user_id'];
+                $reserva->vuelo_id = $validated['vuelo_id'];
+                $reserva->save();
+            }
+            session()->flash('success', 'Las reservas se han creado correctamente.');
+        } else {
+            session()->flash('error', 'No hay suficientes plazas disponibles para el vuelo seleccionado.');
+        }
+
+        return redirect()->route('reservas.index');
     }
-
-    return redirect()->route('reservas.index');
-}
 
 
     /**

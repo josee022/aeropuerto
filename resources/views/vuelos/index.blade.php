@@ -22,7 +22,13 @@
                         Hora Llegada
                     </th>
                     <th  class="px-6 py-3">
-                        Plazas
+                        Plazas Totales
+                    </th>
+                    <th  class="px-6 py-3">
+                        Plazas Libres
+                    </th>
+                    <th  class="px-6 py-3">
+                        Plazas Reservadas
                     </th>
                     <th  class="px-6 py-3">
                         Precio
@@ -57,6 +63,12 @@
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $vuelo->plazas }}
+                        </th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ $vuelo->plazas_libres }}
+                        </th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ $vuelo->plazas_reservadas }}
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $vuelo->precio }}€

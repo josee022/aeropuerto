@@ -81,6 +81,8 @@ class VueloController extends Controller
     {
         return view('vuelos.edit', [
             'vuelo' => $vuelo,
+            'aeropuertos' => Aeropuerto::all(),
+            'companias' => Compania::all(),
         ]);
 
     }

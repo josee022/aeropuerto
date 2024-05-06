@@ -10,7 +10,7 @@ class Reserva extends Model
     use HasFactory;
 
     public function usuario () {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function vuelo () {

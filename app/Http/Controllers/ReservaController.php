@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reserva;
+use App\Models\User;
+use App\Models\Vuelo;
 use Illuminate\Http\Request;
 
 class ReservaController extends Controller
@@ -12,7 +14,11 @@ class ReservaController extends Controller
      */
     public function index()
     {
-        //
+        $reservas = Reserva::orderBy('id')->get();
+
+        return view('reservas.index', [
+            'reservas' => $reservas,
+        ]);
     }
 
     /**
@@ -20,7 +26,11 @@ class ReservaController extends Controller
      */
     public function create()
     {
-        //
+        return view('reservas.create', [
+            'usuarios' => User::all(),
+            'vuelos' => Vuelo::all(),
+
+        ]);
     }
 
     /**
@@ -28,7 +38,17 @@ class ReservaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'vuelo_id' => 'required|exists:vuelos,id',
+        ]);
+
+        $reserva = new Reserva();
+        $reserva->user_id = $validated['user_id'];
+        $reserva->vuelo_id = $validated['vuelo_id'];
+        $reserva->save();
+        session()->flash('success', 'La reserva se ha creado correctamente.');
+        return redirect()->route('reservas.index');
     }
 
     /**
@@ -36,7 +56,9 @@ class ReservaController extends Controller
      */
     public function show(Reserva $reserva)
     {
-        //
+        return view('reservas.show', [
+            'reserva' => $reserva,
+        ]);
     }
 
     /**
@@ -44,7 +66,11 @@ class ReservaController extends Controller
      */
     public function edit(Reserva $reserva)
     {
-        //
+        return view('reservas.edit', [
+            'reserva' => $reserva,
+            'usuarios' => User::all(),
+            'vuelos' => Vuelo::all(),
+        ]);
     }
 
     /**
@@ -52,7 +78,16 @@ class ReservaController extends Controller
      */
     public function update(Request $request, Reserva $reserva)
     {
-        //
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'vuelo_id' => 'required|exists:vuelos,id',
+        ]);
+
+        $reserva->user_id = $validated['user_id'];
+        $reserva->vuelo_id = $validated['vuelo_id'];
+        $reserva->save();
+        session()->flash('success', 'La reserva se ha editado correctamente.');
+        return redirect()->route('reservas.index');
     }
 
     /**
@@ -60,6 +95,8 @@ class ReservaController extends Controller
      */
     public function destroy(Reserva $reserva)
     {
-        //
+        $reserva->delete();
+        session()->flash('success', 'La reserva se ha eliminado correctamente.');
+        return redirect()->route('reservas.index');
     }
 }

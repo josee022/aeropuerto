@@ -19,6 +19,8 @@ return new class extends Migration
             $table->integer('plazas');
             $table->decimal('precio', 6, 2);
             $table->string('codigo_vuelo', 6)->unique();
+            $table->dateTime('salida');
+            $table->dateTime('llegada');
             $table->timestamps();
         });
     }

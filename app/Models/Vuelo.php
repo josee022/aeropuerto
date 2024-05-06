@@ -7,6 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vuelo extends Model
 {
+
+    protected $fillable = [
+        'origen_id',
+        'destino_id',
+        'compania_id',
+        'plazas',
+        'precio',
+        'codigo_vuelo',
+        'salida',
+        'llegada',
+    ];
+
     use HasFactory;
 
     public function aeropuertoOrigen () {

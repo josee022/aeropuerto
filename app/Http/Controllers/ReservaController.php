@@ -6,6 +6,7 @@ use App\Models\Reserva;
 use App\Models\User;
 use App\Models\Vuelo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReservaController extends Controller
 {
@@ -14,7 +15,8 @@ class ReservaController extends Controller
      */
     public function index()
     {
-        $reservas = Reserva::orderBy('id')->get();
+        $user = Auth::user();
+        $reservas = $user->reservas()->orderBy('id')->get();
 
         return view('reservas.index', [
             'reservas' => $reservas,

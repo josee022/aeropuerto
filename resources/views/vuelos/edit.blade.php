@@ -4,13 +4,6 @@
             @csrf
             @method('PUT')
 
-            <!-- Código del vuelo -->
-            <div class="mb-4">
-                <label for="codigo_vuelo" class="block font-medium text-sm text-gray-700">Código del vuelo</label>
-                <input id="codigo_vuelo" class="block mt-1 w-full" type="text" name="codigo_vuelo" value="{{ $vuelo->codigo_vuelo }}" autofocus autocomplete="codigo_vuelo" />
-                <x-input-error :messages="$errors->get('codigo_vuelo')" class="mt-2" />
-            </div>
-
             <!-- Origen -->
             <div class="mb-4">
                 <label for="origen_id" class="block font-medium text-sm text-gray-700">Origen</label>

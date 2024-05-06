@@ -37,19 +37,27 @@ class ReservaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'vuelo_id' => 'required|exists:vuelos,id',
-        ]);
+{
+    $validated = $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'vuelo_id' => 'required|exists:vuelos,id',
+    ]);
 
+    $vuelo = Vuelo::find($validated['vuelo_id']);
+
+    if ($vuelo->plazas > 0) {
         $reserva = new Reserva();
         $reserva->user_id = $validated['user_id'];
         $reserva->vuelo_id = $validated['vuelo_id'];
         $reserva->save();
         session()->flash('success', 'La reserva se ha creado correctamente.');
-        return redirect()->route('reservas.index');
+    } else {
+        session()->flash('error', 'No hay plazas disponibles para el vuelo seleccionado.');
     }
+
+    return redirect()->route('reservas.index');
+}
+
 
     /**
      * Display the specified resource.

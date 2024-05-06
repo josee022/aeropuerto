@@ -17,7 +17,6 @@ class VueloController extends Controller
         return view('vuelos.index', [
             'vuelos' => Vuelo::all(),
         ]);
-
     }
 
     /**
@@ -30,7 +29,6 @@ class VueloController extends Controller
             'companias' => Compania::all(),
 
         ]);
-
     }
 
     /**
@@ -42,8 +40,8 @@ class VueloController extends Controller
             'origen_id' => 'required|exists:aeropuertos,id',
             'destino_id' => 'required|exists:aeropuertos,id',
             'compania_id' => 'required|exists:companias,id',
-            'plazas' => 'required|integer|min:1',
-            'precio' => 'required|numeric|min:0',
+            'plazas' => 'required|integer|min:0',
+            'precio' => 'required|numeric|min:1',
             'codigo_vuelo' => 'required|unique:vuelos,codigo_vuelo|regex:/^[A-Za-z]{2}\d{4}$/',
             'salida' => 'required|date',
             'llegada' => 'required|date',
@@ -61,7 +59,6 @@ class VueloController extends Controller
         $vuelo->save();
         session()->flash('success', 'El vuelo se ha creado correctamente.');
         return redirect()->route('vuelos.index');
-
     }
 
     /**
@@ -84,7 +81,6 @@ class VueloController extends Controller
             'aeropuertos' => Aeropuerto::all(),
             'companias' => Compania::all(),
         ]);
-
     }
 
     /**
@@ -96,11 +92,10 @@ class VueloController extends Controller
             'origen_id' => 'required|exists:aeropuertos,id',
             'destino_id' => 'required|exists:aeropuertos,id',
             'compania_id' => 'required|exists:companias,id',
-            'plazas' => 'required|integer|min:1',
-            'precio' => 'required|numeric|min:0',
-            'codigo_vuelo' => 'required|unique:vuelos,codigo_vuelo|regex:/^[A-Za-z]{2}\d{4}$/',
+            'plazas' => 'required|integer|min:0',
+            'precio' => 'required|numeric|min:1',
             'salida' => 'required|date',
-            'llegada' => 'required|date',
+            'llegada' => 'required|date|after:salida',
         ]);
 
         $vuelo->origen_id = $validated['origen_id'];
@@ -108,14 +103,14 @@ class VueloController extends Controller
         $vuelo->compania_id = $validated['compania_id'];
         $vuelo->plazas = $validated['plazas'];
         $vuelo->precio = $validated['precio'];
-        $vuelo->codigo_vuelo = $validated['codigo_vuelo'];
         $vuelo->salida = $validated['salida'];
         $vuelo->llegada = $validated['llegada'];
         $vuelo->save();
+
         session()->flash('success', 'El vuelo se ha actualizado correctamente.');
         return redirect()->route('vuelos.index');
-
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -125,6 +120,5 @@ class VueloController extends Controller
         $vuelo->delete();
         session()->flash('success', 'El vuelo se ha eliminado correctamente.');
         return redirect()->route('vuelos.index');
-
     }
 }

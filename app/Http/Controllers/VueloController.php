@@ -17,15 +17,15 @@ class VueloController extends Controller
     {
         $vuelos = Vuelo::select('vuelos.*')
             ->selectRaw('COUNT(reservas.id) AS plazas_reservadas')
-            ->selectRaw('vuelos.plazas AS plazas_totales')
             ->selectRaw('(vuelos.plazas - COUNT(reservas.id)) AS plazas_libres')
             ->leftJoin('reservas', 'vuelos.id', '=', 'reservas.vuelo_id')
             ->groupBy('vuelos.id')
             ->orderBy('vuelos.id')
             ->paginate(5);
 
-        return view('vuelos.index', compact('vuelos'));
-    }
+            return view('vuelos.index', [
+                'vuelos' => $vuelos]);
+        }
 
 
 

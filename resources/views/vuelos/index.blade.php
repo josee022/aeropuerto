@@ -33,8 +33,11 @@
                     <th  class="px-6 py-3">
                         Precio
                     </th>
-                    <th  class="px-6 py-3" colspan="2">
-                        Editar/Borrar
+                    <th  class="px-6 py-3">
+                        Editar
+                    </th>
+                    <th  class="px-6 py-3">
+                        Borrar
                     </th>
                 </tr>
             </thead>
